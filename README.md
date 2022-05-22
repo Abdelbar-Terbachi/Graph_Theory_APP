@@ -8,9 +8,9 @@ Pure Python
 ## Algorithms :
 
 
--Kruskal
--Prime
--Dijkstra
--Bellman-ford
--DFS
--BFS
+- Kruskal
+- Prime
+- Dijkstra
+- Bellman-ford
+- DFS
+- BFS
