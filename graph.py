@@ -478,8 +478,3 @@ class Graph:
         #     bellman_ford_table[item] = [distances_list[item], predecessors_list[item]]
         # tabulate(bellman_ford_table, headers='keys', tablefmt='fancy_grid', showindex=index)
         return f' Distances : {distances_list}, Predecesseurs: {predecessors_list}'
-
-
-#
-a = Graph(inputs=inputs, is_wheited=True)
-print(a.bellman_ford("A"))
