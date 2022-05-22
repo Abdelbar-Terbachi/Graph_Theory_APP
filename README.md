@@ -2,8 +2,8 @@
 
 ## Thechnology used :
 
-Tkinter
-Pure Python
+- Tkinter
+- Pure Python
 
 ## Algorithms :
 
