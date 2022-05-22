@@ -1,17 +1,5 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-from tabulate import tabulate
-
-inputs = [
-    ("AB", 4),
-    ("AC", 2),
-    ("BC", 1),
-    ("CD", 8),
-    ("BD", 1),
-
-]
-nodes = ["C", "A", "B", "D"]
-
 
 class Graph:
 
@@ -432,12 +420,6 @@ class Graph:
                 else:
                     pass
             smallest_one_neighbors.clear()
-
-        # dijkstra_table = {}
-        # index = ['Distance', 'Predecesseur']
-        # for item in distances_list:
-        #     dijkstra_table[item] = [distances_list[item], predecessors_list[item]]
-        # tabulate(dijkstra_table, headers='keys', tablefmt='fancy_grid', showindex=index)
         return f' Distances : {distances_list}, Predecesseurs: {predecessors_list}'
 
     # Bellman Ford's Algorithme
@@ -471,10 +453,4 @@ class Graph:
                 if distances_list[edge[1]] > distances_list[edge[0]] + int(edge[2]):
                     distances_list[edge[1]] = distances_list[edge[0]] + int(edge[2])
                     predecessors_list[edge[1]] = edge[0]
-
-        # bellman_ford_table = {}
-        # index = ['Distance', 'Predecessor']
-        # for item in distances_list:
-        #     bellman_ford_table[item] = [distances_list[item], predecessors_list[item]]
-        # tabulate(bellman_ford_table, headers='keys', tablefmt='fancy_grid', showindex=index)
         return f' Distances : {distances_list}, Predecesseurs: {predecessors_list}'

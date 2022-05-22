@@ -1,6 +1,4 @@
 import tkinter as tk
-from tkinter import ttk
-
 from graph import Graph
 
 root = tk.Tk()
@@ -114,7 +112,8 @@ def apply_algorithm():
             dijkstra_header.pack()
             dijkstra_table = tk.Label(dijkstra2_frame, text=f'{dijkstra_list}')
             dijkstra_table.pack()
-            dijkstra_draw_button = tk.Button(dijkstra2_frame, text="Forme Graphique", font='Arial 10' )  # command=draw_result_dijkstra
+            dijkstra_draw_button = tk.Button(dijkstra2_frame, text="Forme Graphique",
+                                             font='Arial 10')  # command=draw_result_dijkstra
             dijkstra_draw_button.pack()
 
         graph_info_frame.destroy()
@@ -167,7 +166,7 @@ def apply_algorithm():
 def fourth_page():
     main_frame.destroy()
     four_page = tk.Frame(root)
-    four_page.pack()
+    four_page.pack(pady=200)
     main_label = tk.Label(four_page, text="Votre Graphe est Crée", font="kefa 20")
     main_label.pack()
     display_graph_label = tk.Label(four_page, text="Appercue Votre Graphe")
@@ -191,7 +190,7 @@ def graph_info_page():
     first__page.destroy()
     second_page.pack()
     second_page_header = tk.Label(second_page, text="Entrer Les Informations de votre Graphe", font="Arial 26")
-    second_page_header.pack()
+    second_page_header.pack(pady=100)
     edges_variable = tk.IntVar(second_page)
     edge_label = tk.Label(second_page, text='Le nombres d\'arrêts de votre graphe ?')
     edge_label.pack()
@@ -253,7 +252,7 @@ def graph_info_page():
                 edge_name_label.grid(row=i + 1, column=i - i)
                 edge_weight_label.grid(row=i + 1, column=i + 2 - i)
                 edge_name_entry = tk.Entry(second_frame, )
-                edge_weight_entry = tk.Entry(second_frame,)
+                edge_weight_entry = tk.Entry(second_frame, )
                 edge_name_entry.grid(row=i + 1, column=i - (i - 1))
                 edge_weight_entry.grid(row=i + 1, column=i + 3 - (i - 1))
                 edges_weight_error = tk.Label(second_frame, fg='red')
@@ -326,13 +325,13 @@ def graph_info_page():
 
 
 def first_page():
-    first__page.pack(expand=1, fill="both")
+    first__page.pack(expand=1, fill="both", pady=150)
     first_page_header = tk.Label(first__page, text="Bienvenue dans GraphApp", font='Kefa 32 ', fg='#000')
     first_page_sub_header = tk.Label(first__page, text="Explorer Vos Graphes", font='Kefa 20 ', fg='#000')
     first_page_header.pack()
     first_page_sub_header.pack()
     create_button = tk.Button(first__page, text=" + Creer ", bg='blue', command=graph_info_page)
-    create_button.pack(padx=20, pady=10, ipady=5, ipadx=10)
+    create_button.pack(padx=20, pady=200, ipady=5, ipadx=10)
 
 
 first_page()
