@@ -2,21 +2,21 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from tabulate import tabulate
 
-summits = {"AB": 1, "BC": 2, "CD": 3, "DE": 4, "EF": 5}
 inputs = [
-    ("AC", 2),
     ("AB", 4),
-
+    ("AC", 2),
     ("BC", 1),
+    ("CD", 8),
+    ("BD", 1),
 
 ]
-
-nodes = ['A', 'B', 'C', 'D']
+nodes = ["C", "A", "B", "D"]
 
 
 class Graph:
 
     def __init__(self, inputs, is_wheited):
+        self.inputs = inputs
         self.is_wheited = is_wheited
         self.even_nodes = []
         self.related_list = {}
@@ -24,7 +24,6 @@ class Graph:
         self.adj_list = {}
         self.nodes = []
         self.arcs = []
-        self.inputs = inputs
 
     def create_arcs(self):
         # Arcs Implementation
@@ -37,12 +36,12 @@ class Graph:
     def create_nodes(self):
         # Nodes Implementation
         # Nodes Filling
-        for arc in self.arcs:
-            for node in arc:
+        for arc in self.inputs:
+            for node in arc[0]:
                 if node not in self.nodes:
                     self.nodes.append(node)
-        self.nodes.sort()
 
+        self.nodes.sort()
         return self.nodes
 
     def create_adjacency_list(self):
@@ -296,8 +295,6 @@ class Graph:
                         parent_list.remove(element0)
         return kruskal_list
 
-    # DFS Algorithm
-
     visited_dfs = set()  # Set to keep track of visited nodes of the graph.
 
     def dfs(self, visited_dfs, graph, node):  # graph is the adj_list || visited is the set that will be
@@ -327,10 +324,10 @@ class Graph:
     # Prime's Algorithme:
 
     def prime(self, start):
-
+        self.create_nodes()
         prime_final_list = []
         prim_book = {}
-        for node in nodes:
+        for node in self.nodes:
             prim_book[node] = []
             for item in self.inputs:
                 if item[0][0] != node and item[0][1] != node:
@@ -338,10 +335,10 @@ class Graph:
                 else:
                     prim_book[node].append(item)
 
-        for node in nodes:
+        for node in self.nodes:
             prim_book[node].sort(key=lambda item: item[1])
 
-        if start not in nodes:
+        if start not in self.nodes:
             return "The Given node does not exist in this Graph"
         else:
             pass
@@ -370,13 +367,17 @@ class Graph:
     # Dijkstra's Algorithm
 
     def dijkstra(self, start):
+
+        self.create_nodes()
         # ===================================Initialisation======================================
+        if start not in self.nodes:
+            return "Le Point de départ n'appartient pas a ce graphe. Verifiez vos données"
         for item in self.inputs:
-            if item[1] < 0:
-                return "The Dikjsta's Algorithme can't be executed because the exist of a negative edge choose " \
-                       "Bellman Ford Instead "
+            if int(item[1]) < 0:
+                return "L'algorithme de Dijkstra ne peut pas être exécuté en raison de l'existence d'un bord négatif, " \
+                       "choisissez Bellman-Ford à la place "
         checked_nodes = [start]
-        non_checked_nodes = [node for node in nodes if node not in checked_nodes]
+        non_checked_nodes = [node for node in self.nodes if node not in checked_nodes]
         current_source = checked_nodes[-1]
         distances_list = {}
         predecessors_list = {}
@@ -389,7 +390,7 @@ class Graph:
                     if char in distances_list:
                         pass
                     else:
-                        distances_list[char] = float('infinity')
+                        distances_list[char] = 9999999999999999999999999999
                     if char in predecessors_list:
                         pass
                     else:
@@ -402,7 +403,7 @@ class Graph:
             smallest_one_value = 99999999999999
             smallest_one_key = None
             for dis in distances_list:
-                if distances_list[dis] < smallest_one_value and dis not in checked_nodes:
+                if int(distances_list[dis]) < int(smallest_one_value) and dis not in checked_nodes:
                     smallest_one_value = distances_list[dis]
                     smallest_one_key = dis
                 else:
@@ -423,25 +424,28 @@ class Graph:
             # Calculate and Update The distances:
 
             for neighbor in smallest_one_neighbors:
-                minimum = min(distances_list[neighbor[0]], distances_list[smallest_one_key] + neighbor[1])
-                if minimum < distances_list[neighbor[0]]:
-                    distances_list[neighbor[0]] = minimum
+                minimum = min(int(distances_list[neighbor[0]]),
+                              int(distances_list[smallest_one_key]) + int(neighbor[1]))
+                if int(minimum) < int(distances_list[neighbor[0]]):
+                    distances_list[neighbor[0]] = int(minimum)
                     predecessors_list[neighbor[0]] = smallest_one_key
                 else:
                     pass
             smallest_one_neighbors.clear()
 
-        dijkstra_table = {}
-        index = ['Distance', 'Predecessor']
-        for item in distances_list:
-            dijkstra_table[item] = [distances_list[item], predecessors_list[item]]
-        return tabulate(dijkstra_table, headers='keys', tablefmt='fancy_grid', showindex=index)
+        # dijkstra_table = {}
+        # index = ['Distance', 'Predecesseur']
+        # for item in distances_list:
+        #     dijkstra_table[item] = [distances_list[item], predecessors_list[item]]
+        # tabulate(dijkstra_table, headers='keys', tablefmt='fancy_grid', showindex=index)
+        return f' Distances : {distances_list}, Predecesseurs: {predecessors_list}'
 
     # Bellman Ford's Algorithme
 
     def bellman_ford(self, start):
         # ===================================Initialisation======================================
         # Filling Edges List
+        self.create_nodes()
 
         edges_list = []
         for item in self.inputs:
@@ -453,22 +457,29 @@ class Graph:
         # Filling Distances List
 
         distances_list = {}
-        for node in nodes:
+        for node in self.nodes:
             distances_list[node] = float('infinity') if node != start else 0
         # Filling Predecessors List
-
+        bf_list = []
         predecessors_list = {}
-        for node in nodes:
+        for node in self.nodes:
             predecessors_list[node] = 'N' if node != start else '-'
         # ================================= Algorithme Start ====================================
         # Bellman-Ford Algorithme Running
-        for i in range(len(nodes)):
+        for i in range(len(self.nodes)):
             for edge in edges_list:
-                if distances_list[edge[1]] > distances_list[edge[0]] + edge[2]:
-                    distances_list[edge[1]] = distances_list[edge[0]] + edge[2]
+                if distances_list[edge[1]] > distances_list[edge[0]] + int(edge[2]):
+                    distances_list[edge[1]] = distances_list[edge[0]] + int(edge[2])
                     predecessors_list[edge[1]] = edge[0]
-        bellman_ford_table = {}
-        index = ['Distance', 'Predecessor']
-        for item in distances_list:
-            bellman_ford_table[item] = [distances_list[item], predecessors_list[item]]
-        return tabulate(bellman_ford_table, headers='keys', tablefmt='fancy_grid', showindex=index)
+
+        # bellman_ford_table = {}
+        # index = ['Distance', 'Predecessor']
+        # for item in distances_list:
+        #     bellman_ford_table[item] = [distances_list[item], predecessors_list[item]]
+        # tabulate(bellman_ford_table, headers='keys', tablefmt='fancy_grid', showindex=index)
+        return f' Distances : {distances_list}, Predecesseurs: {predecessors_list}'
+
+
+#
+a = Graph(inputs=inputs, is_wheited=True)
+print(a.bellman_ford("A"))

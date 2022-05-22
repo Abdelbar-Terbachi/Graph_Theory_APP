@@ -3,8 +3,6 @@ from tkinter import ttk
 
 from graph import Graph
 
-
-
 root = tk.Tk()
 root.geometry("1440x840+300+300")  # width x height + x + y
 # root.resizable(width=False, height=False)
@@ -64,6 +62,10 @@ def apply_algorithm():
         final_shape_prim = Graph(inputs=run_prime(), is_wheited=is_weighted_variable.get())
         final_shape_prim.display_graph()
 
+    def draw_result_dijkstra():
+        final_shape_dijkstra = Graph(inputs=run_dijkstra(), is_wheited=is_weighted_variable.get())
+        final_shape_dijkstra.display_graph()
+
     if algorithm_name == 'Kruskal':
         graph_info_frame.destroy()
         kruskal_frame = tk.Frame(root)
@@ -100,9 +102,61 @@ def apply_algorithm():
         start_point = prime_start_node_variable
 
     elif algorithm_name == 'Dijkstra':
-        pass
+
+        def run_dijkstra():
+            dijkstra_frame.destroy()
+            dijkstra2_frame = tk.Frame(root)
+            dijkstra2_frame.pack()
+            dijkstra_list = my_graph.dijkstra(start_point_dijkstra.get())
+            dijkstra_header = tk.Label(dijkstra2_frame,
+                                       text='Les Listes finales de votres Graphe : ',
+                                       font='Arial 15')
+            dijkstra_header.pack()
+            dijkstra_table = tk.Label(dijkstra2_frame, text=f'{dijkstra_list}')
+            dijkstra_table.pack()
+            dijkstra_draw_button = tk.Button(dijkstra2_frame, text="Forme Graphique", font='Arial 10' )  # command=draw_result_dijkstra
+            dijkstra_draw_button.pack()
+
+        graph_info_frame.destroy()
+        dijkstra_frame = tk.Frame(root)
+        dijkstra_frame.pack()
+        dijkstra_start_node_variable = tk.StringVar(dijkstra_frame)
+        dijkstra_start_node_label = tk.Label(dijkstra_frame, text="Le Point De Depart: ")
+        dijkstra_start_node_label.pack()
+        dijkstra_start_node_entry = tk.Entry(dijkstra_frame, textvariable=dijkstra_start_node_variable)
+        dijkstra_start_node_entry.pack()
+        dijkstra_start_node_button = tk.Button(dijkstra_frame, text="Start", command=run_dijkstra)
+        dijkstra_start_node_button.pack()
+        start_point_dijkstra = dijkstra_start_node_variable
+
     elif algorithm_name == 'Bellman-Ford':
-        pass
+        def run_bellmanf():
+            bellmanf_frame.destroy()
+            bellmanf2_frame = tk.Frame(root)
+            bellmanf2_frame.pack()
+            bellmanf_list = my_graph.bellman_ford(start_point_bellmanf.get())
+            bellmanf_header = tk.Label(bellmanf2_frame,
+                                       text=f'Les Listes finales de votres Graphe : ',
+                                       font='Arial 15')
+            bellmanf_header.pack()
+            bellmanf_table = tk.Label(bellmanf2_frame, text=f'{bellmanf_list}')
+            bellmanf_table.pack()
+            bellmanf_draw_button = tk.Button(bellmanf2_frame, text="Forme Graphique", )  # command=draw_result_dijkstra
+            bellmanf_draw_button.pack()
+            return bellmanf_list
+
+        graph_info_frame.destroy()
+        bellmanf_frame = tk.Frame(root)
+        bellmanf_frame.pack()
+        bellmanf_start_node_variable = tk.StringVar(bellmanf_frame)
+        bellmanf_start_node_label = tk.Label(bellmanf_frame, text="Le Point De Depart: ")
+        bellmanf_start_node_label.pack()
+        bellmanf_start_node_entry = tk.Entry(bellmanf_frame, textvariable=bellmanf_start_node_variable)
+        bellmanf_start_node_entry.pack()
+        bellmanf_start_node_button = tk.Button(bellmanf_frame, text="Start", command=run_bellmanf)
+        bellmanf_start_node_button.pack()
+        start_point_bellmanf = bellmanf_start_node_variable
+
     elif algorithm_name == 'DFS':
         pass
 
@@ -193,13 +247,13 @@ def graph_info_page():
 
         if is_weighted_variable.get():
             for i in range(edges_number):
-                edge_weight_variable = tk.IntVar(second_frame)
+                # edge_weight_variable = tk.IntVar(second_frame)
                 edge_name_label = tk.Label(second_frame, text=f'Arc {i + 1}')
                 edge_weight_label = tk.Label(second_frame, text=f'Capacité {i + 1}')
                 edge_name_label.grid(row=i + 1, column=i - i)
                 edge_weight_label.grid(row=i + 1, column=i + 2 - i)
                 edge_name_entry = tk.Entry(second_frame, )
-                edge_weight_entry = tk.Entry(second_frame, textvariable=edge_weight_variable)
+                edge_weight_entry = tk.Entry(second_frame,)
                 edge_name_entry.grid(row=i + 1, column=i - (i - 1))
                 edge_weight_entry.grid(row=i + 1, column=i + 3 - (i - 1))
                 edges_weight_error = tk.Label(second_frame, fg='red')
